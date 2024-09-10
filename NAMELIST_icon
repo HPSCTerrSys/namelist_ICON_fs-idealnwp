@@ -1,0 +1,235 @@
+!
+&parallel_nml
+ nproma         = 16
+ p_test_run     = .false.
+ l_test_openmp  = .false.
+ l_log_checks   = .false.
+! num_io_procs   = 1
+ num_restart_procs       = 0
+ num_prefetch_proc       = 0
+ itype_comm              = 1
+/
+&grid_nml
+ dynamics_grid_filename = "torus_grid_x70_y70_e2000m.nc"
+ corio_lat = 0.0
+/
+&io_nml
+ dt_checkpoint    = 5184000 ! [s] trigger new restart file, here a dummy value (60 days) to avoid crashes
+ lkeep_in_sync    = .true.
+/
+&run_nml
+ dtime       = 10          ! [s] timestep in seconds
+ iforcing    = 3           ! NWP forcing
+ num_lev     = 65          ! number of full levels of vertical grid
+ lvert_nest = .false.
+ ldynamics   = .true.       ! dynamics
+ ltestcase   = .true.      ! testcase
+ ltransport  = .true.       ! transport
+ ltimer      = .true.       !
+ timers_level = 5           !
+ msg_level   = 5            ! detailed report during integration
+ output      = 'nml','totint'
+ restart_filename = 'idealnwp-scal_restart_<mtype>_<rsttime>.nc'
+ check_uuid_gracefully = .false. !.true.
+ debug_check_level = 0
+/
+&nh_testcase_nml
+ nh_test_name      = 'CBL'  !test case identifier
+ u_cbl             = 0.0, 0.0  !u_cbl(1)=constant, u_cbl(2)=gradient, default=0
+ v_cbl             = 0.0, 0.0  !v_cbl(1)=constant, v_cbl(2)=gradient, default=0
+ th_cbl            = 290.0, 0.006  !th_cbl(1)=constant, th_cbl(2)=gradient
+/
+&nwp_phy_nml
+ dt_conv   = 120
+ dt_rad    = 600
+ dt_sso    = 120
+ dt_gwd    = 120
+ inwp_gscp       = 2
+ mu_rain         = 0.5
+ rain_n0_factor  = 0.1
+ inwp_convection = 1
+ lshallowconv_only = .true.
+ inwp_radiation  = 4
+ inwp_cldcover   = 1
+ inwp_turb       = 1
+ inwp_satad      = 1
+ inwp_sso        = 0 !SPo 1
+ inwp_gwd        = 0
+ inwp_surface    = 1
+ latm_above_top  = .true.
+ ldetrain_conv_prec = .true.
+ efdt_min_raylfric = 7200.
+ itype_z0         = 2
+ icapdcycl        = 3
+/
+&nwp_tuning_nml
+ itune_albedo = 1
+ tune_gkwake = 0.25
+ tune_gfrcrit  = 0.333
+ tune_gkdrag = 0.0
+ tune_minsnowfrac = 0.3
+ tune_box_liq     = 0.04
+ tune_box_liq_asy = 4.0
+ tune_gust_factor = 7.0
+ tune_rcucov = 0.075
+ tune_rhebc_land = 0.825
+ tune_zvz0i    = 0.85
+ tune_sgsclifac = 1.0
+ icpl_turb_clc  = 2
+/
+&turbdiff_nml
+ tkhmin        = 0.5
+ tkmmin        = 0.75
+ pat_len       = 750.
+ tur_len       = 300.
+ rlam_heat     = 10.0
+ rat_sea       = 0.8
+ alpha1        = 0.125
+ ltkesso = .true.
+ frcsmot       = 0.2   ! these 2 switches together apply vertical smoothing of the TKE source terms
+ imode_frcsmot = 2     ! in the tropics (only), which reduces the moist bias in the tropical lower troposphere
+! use horizontal shear production terms with 1/SQRT(Ri) scaling to prevent unwanted side effects:
+ itype_sher    = 2
+ ltkeshs       = .true.
+ a_hshr        = 2.0
+ icldm_turb    = 2
+ q_crit        = 2.0
+ imode_tkesso  = 2
+/
+&lnd_nml
+ ntiles         = 1
+ nlev_snow      = 3
+! zml_soil       = "0.005,0.02,0.06,0.18,0.54,1.62,4.86,14.58"
+ lmulti_snow    = .false.
+ itype_heatcond = 3
+ idiag_snowfrac = 20
+ itype_snowevap = 3
+ lsnowtile      = .true.
+ lseaice        = .true.
+ llake          = .true.
+ itype_lndtbl   = 4
+ itype_evsl     = 4
+ itype_root     = 2
+ itype_trvg     = 3
+ cwimax_ml      = 5.e-4
+ c_soil         = 1.25
+ c_soil_urb     = 0.5
+ lprog_albsi    = .true.
+/
+&radiation_nml
+ ecrad_data_path = "__ecraddata_dir__"
+ izenith         = 0
+ albedo_type     = 1
+/
+&nonhydrostatic_nml
+ itime_scheme    = 4
+ vwind_offctr    = 0.2
+ damp_height     = 10500.
+ rayleigh_coeff  = 1.0
+ divdamp_order   = 24
+ divdamp_fac     = 0.004
+ divdamp_type    = 32
+ l_open_ubc      = .false.
+ igradp_method   = 3
+ l_zdiffu_t      = .true.
+ thslp_zdiffu    = 0.02
+ thhgtd_zdiffu   = 125.
+ htop_moist_proc = 22500.
+ hbot_qvsubstep  = 16000.
+/
+&sleve_nml
+ min_lay_thckn   = 20.
+ itype_laydistr  = 1
+ top_height      = 22000.
+ stretch_fac     = 0.65
+ decay_scale_1   = 4000.
+ decay_scale_2   = 2500.
+ decay_exp       = 1.2
+ flat_height     = 16000.
+/
+&dynamics_nml
+ divavg_cntrwgt = 0.50
+ idiv_method    = 1
+ iequations     = 3
+ lcoriolis      = .false.
+/
+&transport_nml
+  ivadv_tracer   = 3,3,3,3,3
+  itype_hlimit   = 3,4,4,4,4,
+  ihadv_tracer   = 52,2,2,2,2,
+  llsq_svd       = .false.
+  beta_fct       = 1.005
+/
+&diffusion_nml
+/
+&interpol_nml
+ nudge_zone_width     = 10
+ nudge_max_coeff      = 0.075
+ lsq_high_ord         = 3
+ l_intp_c2l           = .true.
+ l_mono_c2l           = .true.
+!support_baryctr_intp = .true.
+/
+&gridref_nml
+ grf_intmethod_e  = 6
+ grf_intmethod_ct = 2
+ grf_tracfbk      = 2
+ denom_diffu_v    = 150.
+/
+! -------------------------------------------------------------------------- !
+! ---  ICON-LAM: constant output fields - native grid at VV=0  --- !
+! -------------------------------------------------------------------------- !
+ &output_nml
+ filetype             = 4                ! output format: 2=GRIB2, 4=NETCDFv2
+ dom                  = -1                               ! write all domains
+ output_time_unit     = 1                                ! 1: seconds
+ output_bounds        = 0., 0., 3600.                    ! start, end, increment
+ steps_per_file       = 1
+ mode                 = 1                                ! 1: forecast mode (relative t-axis), 2: climate mode (absolute t-axis)
+ include_last         = .false.
+ output_filename      = '__outname___constant'               ! file name base
+ filename_format      = '<output_filename>_<datetime2>'
+ ready_file           = 'ready_ILAM_<ddhhmmss>'
+ stream_partitions_ml = 1
+ pe_placement_ml      = 0
+ ml_varlist           = 'z_ifc'
+! ml_varlist           = 'z_ifc','z_mc',
+!                        'depth_lk', 'fr_seaice', 'fr_lake', 'fr_land',
+!                        'topography_c', 'lai', 'plcov', 'rootdp', 'soiltyp'
+ output_grid          = .true.
+ remap                = 0                                ! 0: icon grid, 1: lat-lon
+/
+! -------------------------------------------------------------------------------- !
+! ---  ICON-LAM: further and diagnostic output fields - native grid  --- !
+! -------------------------------------------------------------------------------- !
+&output_nml
+ filetype         = 4
+ dom              = -1
+ output_start     = __outdatestart__
+ output_end       = __outdateend__
+ output_interval  = "PT01H"
+ ! steps_per_file   = 1
+ file_interval    = "P01D"
+ include_last     = .true.
+ ! steps_per_file_inclfirst = .false.
+ remap            = 0   ! triangular grid
+ output_filename  = '__outname___inst'
+ filename_format  = '<output_filename>_DOM<physdom>_<levtype>_<datetime2>_1h'
+ ready_file       = 'ready_ILAM_<ddhhmmss>'
+ output_grid      = .true.
+ ml_varlist       = 'U', 'V', 'W', 'theta_v'
+! ml_varlist       = 'U', 'V', 'W', 'T', 'theta_v', 'P', 'QV', 'QC', 'QI', 'QR', 'QS', 'QG',
+!                    'TKE',
+!                    'CLCL', 'CLCM', 'CLCH', 'CLCT', 'CLCT_MOD', 'CLDEPTH', 'HTOP_DC',
+!                    'shfl_s','lhfl_s','ASWDIFU_S', 'ALHFL_S', 'ASHFL_S', 'APAB_S',
+!                    'umfl_s','vmfl_s',
+!                    'PMSL', 'RELHUM_2M', 'QV_S',
+!                    'TMAX_2M', 'TMIN_2M', 't_seasfc',
+!                    'CEILING', 'cape','CAPE_ML', 'CIN_ML',
+!                    'T_SO', 'W_SO', 'W_SO_ICE', 'SMI',
+!                    'RAIN_GSP', 'RAIN_CON', 'SNOW_GSP', 'SNOW_CON', 'GRAU_GSP', 'TOT_PREC',
+!                    'CLC','prec_con','prec_gsp',
+!                    'PRR_GSP' , 'PRS_GSP' , 'PRG_GSP', 'tot_prec_rate_avg', 'prec_con_rate_avg', 'prec_gsp_rate_avg',
+!                    'RHO_SNOW ','T_SNOW ','W_SNOW ','H_SNOW ','W_I ','freshsnow',
+!                    'T_MNW_LK','T_WML_LK','H_ML_LK','T_BOT_LK','C_T_LK'
+/

@@ -1,0 +1,23 @@
+&master_nml
+ lrestart            = .false.
+/
+&time_nml
+ ini_datetime_string = "__simstart__"
+ end_datetime_string = "__simend__"
+ dt_restart          = 5184000       ! dummy value to avoid crashes
+/
+&master_model_nml
+  model_name="ATMO"
+  model_namelist_filename="NAMELIST_icon"
+  model_type=1
+  model_min_rank=0
+  model_max_rank=65535
+  model_inc_rank=1
+/
+&master_time_control_nml
+ calendar             = "proleptic gregorian"
+ checkpointTimeIntval = ""
+ restartTimeIntval    = ""
+ experimentStartDate  = __simstart__
+ experimentStopDate   = __simend__
+/
