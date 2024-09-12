@@ -192,7 +192,7 @@
  ready_file           = 'ready_ILAM_<ddhhmmss>'
  stream_partitions_ml = 1
  pe_placement_ml      = 0
- ml_varlist           = 'z_ifc'
+ ml_varlist           = 'z_mc'
 ! ml_varlist           = 'z_ifc','z_mc',
 !                        'depth_lk', 'fr_seaice', 'fr_lake', 'fr_land',
 !                        'topography_c', 'lai', 'plcov', 'rootdp', 'soiltyp'
@@ -217,7 +217,7 @@
  filename_format  = '<output_filename>_DOM<physdom>_<levtype>_<datetime2>_1h'
  ready_file       = 'ready_ILAM_<ddhhmmss>'
  output_grid      = .true.
- ml_varlist       = 'U', 'V', 'W', 'theta_v'
+ ml_varlist       = 'U', 'V', 'W', 'theta_v','CLCT','QV'
 ! ml_varlist       = 'U', 'V', 'W', 'T', 'theta_v', 'P', 'QV', 'QC', 'QI', 'QR', 'QS', 'QG',
 !                    'TKE',
 !                    'CLCL', 'CLCM', 'CLCH', 'CLCT', 'CLCT_MOD', 'CLDEPTH', 'HTOP_DC',
