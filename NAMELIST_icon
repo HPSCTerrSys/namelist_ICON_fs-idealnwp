@@ -118,7 +118,7 @@
 /
 &radiation_nml
  ecrad_data_path = "__ecraddata_dir__"
- izenith         = 0
+ izenith         = 4
  albedo_type     = 1
 /
 &nonhydrostatic_nml
