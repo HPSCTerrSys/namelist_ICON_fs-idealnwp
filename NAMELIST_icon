@@ -37,7 +37,7 @@
  nh_test_name      = 'CBL'  !test case identifier
  u_cbl             = 0.0, 0.0  !u_cbl(1)=constant, u_cbl(2)=gradient, default=0
  v_cbl             = 0.0, 0.0  !v_cbl(1)=constant, v_cbl(2)=gradient, default=0
- th_cbl            = 290.0, 0.006  !th_cbl(1)=constant, th_cbl(2)=gradient
+ th_cbl            = 280.0, 0.006  !th_cbl(1)=constant, th_cbl(2)=gradient
 /
 &nwp_phy_nml
  dt_conv   = 120
