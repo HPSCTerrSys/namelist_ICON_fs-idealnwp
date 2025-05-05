@@ -7,7 +7,6 @@
 ! num_io_procs   = 1
  num_restart_procs       = 0
  num_prefetch_proc       = 0
- itype_comm              = 1
 /
 &grid_nml
  dynamics_grid_filename = "torus_grid_x70_y70_e2000m.nc"
@@ -129,7 +128,6 @@
  divdamp_order   = 24
  divdamp_fac     = 0.004
  divdamp_type    = 32
- l_open_ubc      = .false.
  igradp_method   = 3
  l_zdiffu_t      = .true.
  thslp_zdiffu    = 0.02
@@ -149,7 +147,6 @@
 /
 &dynamics_nml
  divavg_cntrwgt = 0.50
- idiv_method    = 1
  iequations     = 3
  lcoriolis      = .false.
 /
