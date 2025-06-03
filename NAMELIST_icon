@@ -9,7 +9,7 @@
  num_prefetch_proc       = 0
 /
 &grid_nml
- dynamics_grid_filename = "torus_grid_x70_y70_e2000m.nc"
+ dynamics_grid_filename = "__domainfile_icon__"
  corio_lat = 0.0
 /
 &io_nml
